@@ -1,0 +1,14 @@
+# curl -H "API_KEY: my-secret-token-1" http://localhost:8080
+
+GET http://localhost:8080 HTTP/1.1
+
+###
+GET http://localhost:8080 HTTP/1.1
+content-type: application/json
+API_KEY: my_secret_token_1
+
+###
+GET http://localhost:8080 HTTP/1.1
+content-type: application/json
+API_KEY: my_secret_token_2
+
