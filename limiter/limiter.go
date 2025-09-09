@@ -89,6 +89,8 @@ func (rl *RateLimiter) Allow(identifier string) bool {
 		blockDuration = tokenConfig.BlockDuration
 	}
 
+	fmt.Printf("Verificando limite para %s: limite=%d, duração do bloqueio=%v\n", identifier, limit, blockDuration)
+
 	// 3. Incrementa o contador de requisições
 	count, err := rl.config.Storage.Increment(identifier)
 	if err != nil {
