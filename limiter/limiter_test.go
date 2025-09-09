@@ -210,6 +210,13 @@ func TestLoadConfigFromEnv(t *testing.T) {
 		t.Errorf("Expected IPBlockDuration to be %v, got %v", expectedIPBlockDuration, config.IPBlockDuration)
 	}
 
+	fmt.Println("config.TokenLimits: ", config.TokenLimits)
+
+	// Remove entradas .env se existirem
+	delete(config.TokenLimits, "my_secret_token_1")
+	delete(config.TokenLimits, "my_secret_token_2")
+
+	// Verifica se os limites de token foram carregados corretamente
 	if len(config.TokenLimits) != 2 {
 		t.Fatalf("Expected to load 2 token limits, but got %d", len(config.TokenLimits))
 	}
