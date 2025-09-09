@@ -47,7 +47,7 @@ func main() {
 		w.Write([]byte("Bem-vindo! Requisição permitida.\n"))
 	})
 
-	// Aplica o middleware ao handler
+	// Aplico o middleware ao handler
 	handler := rateLimiterMiddleware(mux)
 
 	serverPort := os.Getenv("SERVER_PORT")

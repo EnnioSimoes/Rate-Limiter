@@ -43,7 +43,7 @@ O servidor web deve responder na porta 8080.
 ==================================
 
 
-# Como Executar e Testar
+# Como Executar
 ## Passo 1: Iniciar App e Redis
 
 No terminal, na raiz do projeto, execute o docker-compose:
@@ -90,3 +90,10 @@ Você poderá fazer 6 requisições em um segundo antes de ser bloqueado.
 
 O bloqueio para este token durará 3 minutos.
 
+# Rodar Test 
+
+Para rodar os testes do limiter execute o seguinte comando
+
+```
+docker exec -ti rate-limiter-app-1 go test ./limiter/...
+```
