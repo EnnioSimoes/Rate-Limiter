@@ -43,8 +43,9 @@ O servidor web deve responder na porta 8080.
 ==================================
 
 
-Como Executar e Testar
-Passo 1: Iniciar o Redis
+# Como Executar e Testar
+## Passo 1: Iniciar App e Redis
+
 No terminal, na raiz do projeto, execute o docker-compose:
 
 Bash
@@ -53,59 +54,39 @@ Bash
 docker-compose up -d
 ````
 
-Isso iniciará um contêiner Redis em background.
+Isso iniciará os contêiners com o App e Redis em background.
 
-Passo 2: Executar a Aplicação Go
-Em outro terminal, na raiz do projeto, execute o main.go:
-
-Bash
-
-``` 
-go run main.go 
-```
-
-Passo 3: Testar
+## Passo 2: Testar
 Você pode usar o arquivo api.http ou ferramentas como curl para testar os diferentes cenários.
 
-Teste 1: Limitação por IP
-Abra um terminal e execute o comando a seguir 6 vezes rapidamente (em menos de 1 segundo). O limite no .env é de 5 requisições/segundo.
+### Teste 1: Limitação por IP
+Execute o  primeiro teste 3 vezes rapidamente (em menos de 1 segundo). O limite no .env é de 2 (para facilitar o teste) requisições/segundo.
 
-Bash
-
-curl http://localhost:8080
 Resultado esperado:
 
-As 5 primeiras requisições retornarão Bem-vindo! Requisição permitida.
+As 2 primeiras requisições retornarão Bem-vindo! Requisição permitida.
 
-A 6ª requisição (e as subsequentes) retornará HTTP 429 Too Many Requests com a mensagem: you have reached the maximum number of requests or actions allowed within a certain time frame.
+A 3ª requisição retornará HTTP 429 Too Many Requests com a mensagem: you have reached the maximum number of requests or actions allowed within a certain time frame.
 
 Se você esperar 1 minuto (o IP_BLOCK_DURATION_MINUTES), poderá fazer novas requisições.
 
-Teste 2: Limitação por Token (com limite maior)
-Agora, vamos usar um token que tem um limite de 10 requisições/segundo. Execute o comando a seguir 11 vezes rapidamente.
-
-```
-curl -H "API_KEY: my-secret-token-1" http://localhost:8080
-```
+### Teste 2: Limitação por Token (com limite maior)
+Agora, use um token (TOKEN_LIMIT_my_secret_token_1) que tem um limite de 4 (também para facilitar o teste) requisições/segundo. Execute o comando a seguir 5 vezes rapidamente.
 
 Resultado esperado:
 
-As 10 primeiras requisições serão bem-sucedidas.
+As 4 primeiras requisições serão bem-sucedidas.
 
-A 11ª será bloqueada com HTTP 429.
+A 15ª será bloqueada com HTTP 429.
 
-O bloqueio para este token durará 2 minutos, conforme configurado no .env.
+O bloqueio para este token durará 1 minuto, conforme configurado no .env.
 
 Teste 3: Limitação por outro Token
-Teste com o segundo token, que tem um limite de 20 requisições/segundo.
-
-```
-curl -H "API_KEY: my-secret-token-2" http://localhost:8080
-````
+Teste com o segundo token (TOKEN_LIMIT_my_secret_token_2), que tem um limite de 6 requisições/segundo.
 
 Resultado esperado:
 
-Você poderá fazer 20 requisições em um segundo antes de ser bloqueado.
+Você poderá fazer 6 requisições em um segundo antes de ser bloqueado.
 
 O bloqueio para este token durará 3 minutos.
 
